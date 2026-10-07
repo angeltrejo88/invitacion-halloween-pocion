@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Grimorio Encantado - Poción de Halloween</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=MedievalSharp&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Niebla de fondo -->
+  <div class="fog-overlay-bottom"></div>
+
+  <!-- Botón Control Muto/Audio -->
+  <button id="btn-audio-toggle" class="audio-toggle-btn" aria-label="Activar/Desactivar Sonido">
+    <span id="audio-icon">🔊</span>
+  </button>
+
+  <div class="container">
+    <h1 class="main-title">Poción del Aquelarre</h1>
+    <p class="instruction" id="instruction-text">Arrastra los ingredientes correctos al caldero. ¡Un ingrediente de más causará un desastre!</p>
+
+    <div class="game-area" id="game-area">
+      <!-- Receta con cantidades necesarias -->
+      <div class="recipe-card">
+        <div class="recipe-title">📜 Receta del Conjuro</div>
+        <ul class="recipe-list">
+          <li class="recipe-item" id="req-pumpkin">
+            <span class="item-label">🎃 Calabazas</span>
+            <strong id="val-pumpkin">0 / 2</strong>
+          </li>
+          <li class="recipe-item" id="req-bat">
+            <span class="item-label">🦇 Murciélagos</span>
+            <strong id="val-bat">0 / 3</strong>
+          </li>
+          <li class="recipe-item" id="req-potion">
+            <span class="item-label">🧪 Pociones</span>
+            <strong id="val-potion">0 / 2</strong>
+          </li>
+          <li class="recipe-item" id="req-rabbit">
+            <span class="item-label">🐇 Pata de Conejo</span>
+            <strong id="val-rabbit">0 / 4</strong>
+          </li>
+          <li class="recipe-item" id="req-web">
+            <span class="item-label">🕸️ Telarañas</span>
+            <strong id="val-web">0 / 2</strong>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Caldero místico -->
+      <div class="cauldron-area">
+        <div class="cauldron" id="cauldron">
+          <div class="cauldron-rim"></div>
+          <div class="cauldron-liquid" id="liquid">
+            <div class="bubble b1"></div>
+            <div class="bubble b2"></div>
+            <div class="bubble b3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estante de Ingredientes -->
+    <div class="ingredients-shelf" id="shelf">
+      <div class="ingredient-card" id="card-pumpkin" draggable="true">
+        <div class="img-wrapper">
+          <img src="calabaza.png" style="transform: scale(1.3);" alt="Calabaza" class="ingredient-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="fallback-icon">🎃</span>
+        </div>
+        <span class="ingredient-name">Calabaza</span>
+      </div>
+
+      <div class="ingredient-card" id="card-bat" draggable="true">
+        <div class="img-wrapper">
+          <img src="murcielago.png" style="transform: scale(1.9);" alt="Murciélago" class="ingredient-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="fallback-icon">🦇</span>
+        </div>
+        <span class="ingredient-name">Murciélago</span>
+      </div>
+
+      <div class="ingredient-card" id="card-potion" draggable="true">
+        <div class="img-wrapper">
+          <img src="pocion.png" style="transform: scale(1.3);" alt="Poción" class="ingredient-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="fallback-icon">🧪</span>
+        </div>
+        <span class="ingredient-name">Poción</span>
+      </div>
+
+      <div class="ingredient-card" id="card-rabbit" draggable="true">
+        <div class="img-wrapper">
+          <img src="pata_conejo.png" style="transform: scale(1.5);" alt="Pata de Conejo" class="ingredient-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="fallback-icon">🐇</span>
+        </div>
+        <span class="ingredient-name">Pata Conejo</span>
+      </div>
+
+      <div class="ingredient-card" id="card-web" draggable="true">
+        <div class="img-wrapper">
+          <img src="telarana.png" style="transform: scale(1.7);" alt="Telaraña" class="ingredient-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span class="fallback-icon">🕸️</span>
+        </div>
+        <span class="ingredient-name">Telaraña</span>
+      </div>
+    </div>
+
+    <!-- Pantalla Embarrada / Explosión Modal -->
+    <div class="splatter-overlay" id="splatter">
+      <div class="game-over-box">
+        <h2 class="game-over-title">💥 ¡EXPLOSIÓN! 💥</h2>
+        <p>Añadiste el ingrediente equivocado o te pasaste de la dosis. ¡La poción estalló en mil pedazos!</p>
+        <button class="btn-retry" id="btn-retry">🔄 Intentar de nuevo</button>
+      </div>
+    </div>
+
+    <!-- Grimorio Revelado al completar la mezcla -->
+    <div class="grimorio-book" id="grimorio">
+      <div class="book-inner">
+        <h2 class="grimorio-title">✨ Poción Completada ✨</h2>
+        <p class="grimorio-subtitle">¡Has liberado el encantamiento de la noche!</p>
+        
+        <div class="event-details">
+          <p><strong>📅 FECHA:</strong> Sábado 31 de Octubre, 2026</p> <br>
+          <p><strong>⏰ HORA:</strong> 9:00 PM</p> <br>
+          <p><strong>📍 LUGAR:</strong> La Mansión Embrujada</p> <br>
+          <p class="dresscode">🎃 <strong>Código de Vestimenta:</strong> Disfraz Obligatorio</p>
+        </div>
+
+        <a href="https://wa.me/?text=%C2%A1Complet%C3%A9%20la%20Poci%C3%B3n%20del%20Aquelarre!%20Confirmo%20mi%20asistencia%20al%20evento." target="_blank" class="btn-rsvp">📜 Confirmar por WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
